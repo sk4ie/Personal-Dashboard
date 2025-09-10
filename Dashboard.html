@@ -397,9 +397,9 @@
     let currentEditingLink = null;
     let data = {};
 
-    // Initialize default data (fixed for hosting environments)
+    // Always load defaults (static dashboard, no saving)
 function initializeData() {
-  const defaultData = {
+  data = {
     'Discord Voting': {
       icon: '🗳️',
       links: [
@@ -442,18 +442,7 @@ function initializeData() {
       ]
     }
   };
-
-  try {
-    const savedData = localStorage.getItem('bookmarkData');
-    if (savedData) {
-      data = JSON.parse(savedData);
-    } else {
-      data = defaultData;
-    }
-  } catch (error) {
-    // If localStorage is blocked (e.g. Discord browser), just use defaults
-    data = defaultData;
-  }
+}
 
   // Try saving so next time it persists
   try {
