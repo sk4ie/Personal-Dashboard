@@ -397,64 +397,71 @@
     let currentEditingLink = null;
     let data = {};
 
-    // Initialize default data
-    function initializeData() {
-      const defaultData = {
-        'Discord Voting': {
-          icon: '🗳️',
-          links: [
-            { name: 'Vote Bot 1', url: 'https://top.gg/bot/792827809797898240/vote' },
-            { name: 'Vote Bot 2', url: 'https://top.gg/bot/815289915557675118/vote' },
-            { name: 'Vote Bot 3', url: 'https://top.gg/bot/673362753489993749/vote' },
-            { name: 'Vote Bot 4', url: 'https://top.gg/bot/853629533855809596/vote' },
-            { name: 'Vote Bot 5', url: 'https://top.gg/bot/1242388858897956906/vote' }
-          ]
-        },
-        'Important Links': {
-          icon: '⭐',
-          links: [
-            { name: 'Discord DMs', url: 'https://discord.com/channels/@me' },
-            { name: 'FMHY', url: 'https://fmhy.net' },
-            { name: 'ChatGPT', url: 'https://chatgpt.com' },
-            { name: 'AniList', url: 'https://anilist.co' }
-          ]
-        },
-        'Discord Bot Sites': {
-          icon: '🤖',
-          links: [
-            { name: 'Shoob', url: 'https://shoob.gg/bump' },
-            { name: 'Sofi', url: 'https://sofi.gg/bump' },
-            { name: 'Mazoku', url: 'https://mazoku.cc' }
-          ]
-        },
-        'Streaming': {
-          icon: '🎬',
-          links: [
-            { name: 'AnimePahe', url: 'https://animepahe.ru' },
-            { name: 'AnimeKai', url: 'https://animekai.bz' },
-            { name: 'VegaMovies', url: 'https://vegamovies.hot' }
-          ]
-        },
-        'Personal': {
-          icon: '🎯',
-          links: [
-            { name: 'Character Choices', url: 'https://sk4ie.github.io/Character-choices-' }
-          ]
-        }
-      };
-
-      try {
-        const savedData = localStorage.getItem('bookmarkData');
-        if (savedData) {
-          data = JSON.parse(savedData);
-        } else {
-          data = defaultData;
-          saveData();
-        }
-      } catch (error) {
-        data = defaultData;
-      }
+    // Initialize default data (fixed for hosting environments)
+function initializeData() {
+  const defaultData = {
+    'Discord Voting': {
+      icon: '🗳️',
+      links: [
+        { name: 'Vote Bot 1', url: 'https://top.gg/bot/792827809797898240/vote' },
+        { name: 'Vote Bot 2', url: 'https://top.gg/bot/815289915557675118/vote' },
+        { name: 'Vote Bot 3', url: 'https://top.gg/bot/673362753489993749/vote' },
+        { name: 'Vote Bot 4', url: 'https://top.gg/bot/853629533855809596/vote' },
+        { name: 'Vote Bot 5', url: 'https://top.gg/bot/1242388858897956906/vote' }
+      ]
+    },
+    'Important Links': {
+      icon: '⭐',
+      links: [
+        { name: 'Discord DMs', url: 'https://discord.com/channels/@me' },
+        { name: 'FMHY', url: 'https://fmhy.net' },
+        { name: 'ChatGPT', url: 'https://chatgpt.com' },
+        { name: 'AniList', url: 'https://anilist.co' }
+      ]
+    },
+    'Discord Bot Sites': {
+      icon: '🤖',
+      links: [
+        { name: 'Shoob', url: 'https://shoob.gg/bump' },
+        { name: 'Sofi', url: 'https://sofi.gg/bump' },
+        { name: 'Mazoku', url: 'https://mazoku.cc' }
+      ]
+    },
+    'Streaming': {
+      icon: '🎬',
+      links: [
+        { name: 'AnimePahe', url: 'https://animepahe.ru' },
+        { name: 'AnimeKai', url: 'https://animekai.bz' },
+        { name: 'VegaMovies', url: 'https://vegamovies.hot' }
+      ]
+    },
+    'Personal': {
+      icon: '🎯',
+      links: [
+        { name: 'Character Choices', url: 'https://sk4ie.github.io/Character-choices-' }
+      ]
     }
+  };
+
+  try {
+    const savedData = localStorage.getItem('bookmarkData');
+    if (savedData) {
+      data = JSON.parse(savedData);
+    } else {
+      data = defaultData;
+    }
+  } catch (error) {
+    // If localStorage is blocked (e.g. Discord browser), just use defaults
+    data = defaultData;
+  }
+
+  // Try saving so next time it persists
+  try {
+    localStorage.setItem('bookmarkData', JSON.stringify(data));
+  } catch (e) {
+    console.warn("LocalStorage not available, using defaults only");
+  }
+}
 
     function saveData() {
       try {
